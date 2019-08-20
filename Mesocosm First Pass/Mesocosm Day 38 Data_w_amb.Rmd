@@ -1,0 +1,502 @@
+---
+title: "R Notebook"
+output:
+  word_document: default
+  html_notebook: default
+---
+
+```{r}
+#Converting CSV into data frame 
+dat <- read.csv("New R DATA.csv")
+mrdat <- read.csv("~/Mesocosm First Pass/MR.DATA.csv")
+library(dplyr)
+#Creating data sets for bar graphs
+#Separating Data by Analysis Type
+MeHg <- dat %>%
+  filter(Analysis == "MeHg")
+TotHg <- dat %>%
+  filter(Analysis == "TotHg")
+#Separating MeHg by Sample Type
+sm <- MeHg %>%
+  filter(Type == "s") %>% 
+  group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202))
+sme <- MeHg %>%
+  filter(Type == "s") %>% 
+  group_by(Box) %>%
+  summarize(SE199 = sd(X199)/sqrt(length(X199)), SE200 = sd(X200)/sqrt(length(X200)), SE201 = sd(X201)/sqrt(length(X201)), SE202 = sd(X202)/sqrt(length(X202)))
+wm <- MeHg %>% 
+  filter(Type == "w") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202))
+wme <- MeHg %>%
+  filter(Type == "w") %>% 
+  group_by(Box) %>%
+  summarize(SE199 = sd(X199)/sqrt(length(X199)), SE200 = sd(X200)/sqrt(length(X200)), SE201 = sd(X201)/sqrt(length(X201)), SE202 = sd(X202)/sqrt(length(X202)))
+dwm <- MeHg %>% 
+  filter(Type == "dw") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202))
+dwme <- MeHg %>%
+  filter(Type == "dw") %>% 
+  group_by(Box) %>%
+  summarize(SE199 = sd(X199)/sqrt(length(X199)), SE200 = sd(X200)/sqrt(length(X200)), SE201 = sd(X201)/sqrt(length(X201)), SE202 = sd(X202)/sqrt(length(X202)))
+dsm <- MeHg %>% 
+  filter(Type == "ds") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202))
+dsme <- MeHg %>%
+  filter(Type == "ds") %>% 
+  group_by(Box) %>%
+  summarize(SE199 = sd(X199)/sqrt(length(X199)), SE200 = sd(X200)/sqrt(length(X200)), SE201 = sd(X201)/sqrt(length(X201)), SE202 = sd(X202)/sqrt(length(X202)))
+bpm <- MeHg %>% 
+  filter(Type == "bp") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202))
+bpme <- MeHg %>%
+  filter(Type == "bp") %>% 
+  group_by(Box) %>%
+  summarize(SE199 = sd(X199)/sqrt(length(X199)), SE200 = sd(X200)/sqrt(length(X200)), SE201 = sd(X201)/sqrt(length(X201)), SE202 = sd(X202)/sqrt(length(X202)))
+bbm <- MeHg %>% 
+  filter(Type == "bb") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202))
+bbme <- MeHg %>%
+  filter(Type == "bb") %>% 
+  group_by(Box) %>%
+  summarize(SE199 = sd(X199)/sqrt(length(X199)), SE200 = sd(X200)/sqrt(length(X200)), SE201 = sd(X201)/sqrt(length(X201)), SE202 = sd(X202)/sqrt(length(X202)))
+bsm <- MeHg %>% 
+  filter(Type == "bs") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202))
+bsme <- MeHg %>%
+  filter(Type == "bs") %>% 
+  group_by(Box) %>%
+  summarize(SE199 = sd(X199)/sqrt(length(X199)), SE200 = sd(X200)/sqrt(length(X200)), SE201 = sd(X201)/sqrt(length(X201)), SE202 = sd(X202)/sqrt(length(X202)))
+bfm <- MeHg %>% 
+  filter(Type == "bf") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202))
+bfme <- MeHg %>%
+  filter(Type == "bf") %>% 
+  group_by(Box) %>%
+  summarize(SE199 = sd(X199)/sqrt(length(X199)), SE200 = sd(X200)/sqrt(length(X200)), SE201 = sd(X201)/sqrt(length(X201)), SE202 = sd(X202)/sqrt(length(X202)))
+#Separating Tot Hg by Sample Type
+st <- TotHg %>% 
+  filter(Type == "s") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202))
+ste <- TotHg %>%
+  filter(Type == "s") %>% 
+  group_by(Box) %>%
+  summarize(SE199 = sd(X199)/sqrt(length(X199)), SE200 = sd(X200)/sqrt(length(X200)), SE201 = sd(X201)/sqrt(length(X201)), SE202 = sd(X202)/sqrt(length(X202)))
+wt <- TotHg %>% 
+  filter(Type == "w") %>% group_by(Box) %>%
+ summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202))
+wte <- TotHg %>%
+  filter(Type == "w") %>% 
+  group_by(Box) %>%
+  summarize(SE199 = sd(X199)/sqrt(length(X199)), SE200 = sd(X200)/sqrt(length(X200)), SE201 = sd(X201)/sqrt(length(X201)), SE202 = sd(X202)/sqrt(length(X202)))
+dwt <- TotHg %>% 
+  filter(Type == "dw") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202))
+dwte <- TotHg %>%
+  filter(Type == "dw") %>% 
+  group_by(Box) %>%
+  summarize(SE199 = sd(X199)/sqrt(length(X199)), SE200 = sd(X200)/sqrt(length(X200)), SE201 = sd(X201)/sqrt(length(X201)), SE202 = sd(X202)/sqrt(length(X202)))
+bpt <- TotHg %>% 
+  filter(Type == "bp") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202))
+bpte <- TotHg %>%
+  filter(Type == "bp") %>% 
+  group_by(Box) %>%
+  summarize(SE199 = sd(X199)/sqrt(length(X199)), SE200 = sd(X200)/sqrt(length(X200)), SE201 = sd(X201)/sqrt(length(X201)), SE202 = sd(X202)/sqrt(length(X202)))
+bbt <- TotHg %>% 
+  filter(Type == "bb") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202))
+bbte <- TotHg %>%
+  filter(Type == "bb") %>% 
+  group_by(Box) %>%
+  summarize(SE199 = sd(X199)/sqrt(length(X199)), SE200 = sd(X200)/sqrt(length(X200)), SE201 = sd(X201)/sqrt(length(X201)), SE202 = sd(X202)/sqrt(length(X202)))
+bst <- TotHg %>% 
+  filter(Type == "bs") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202))
+bste <- TotHg %>%
+  filter(Type == "bs") %>% 
+  group_by(Box) %>%
+  summarize(SE199 = sd(X199)/sqrt(length(X199)), SE200 = sd(X200)/sqrt(length(X200)), SE201 = sd(X201)/sqrt(length(X201)), SE202 = sd(X202)/sqrt(length(X202)))
+bft <- TotHg %>% 
+  filter(Type == "bf") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202))
+bfte <- TotHg %>%
+  filter(Type == "bf") %>% 
+  group_by(Box) %>%
+  summarize(SE199 = sd(X199)/sqrt(length(X199)), SE200 = sd(X200)/sqrt(length(X200)), SE201 = sd(X201)/sqrt(length(X201)), SE202 = sd(X202)/sqrt(length(X202)))
+```
+```{r}
+#MeHg/TotHg
+ms <- filter(MeHg, Type == "s")
+mt <- filter(TotHg, Type == "s")
+head(mt)
+colnames(mt) <- c("Time", "Box", "Type", "Number", "Sub", "Analysis", "TX199", "TX200", "TX201", "TX202", "TX196")
+metot <- cbind(ms, mt[, 7:10])
+mts <- metot %>% 
+    mutate(MT199 = metot$X199/metot$TX199, MT200 = metot$X200/metot$TX200, MT201 = metot$X201/metot$TX201, MT202 = metot$X200/metot$TX202)
+
+smt <- mts %>% 
+  group_by(Box) %>%
+  summarize(Mean199 = mean(MT199), Mean200 = mean(MT200), Mean201 = mean(MT201), Mean202 = mean(MT202))
+smte <- mts %>%
+  group_by(Box) %>%
+  summarize(SE199 = sd(MT199)/sqrt(length(X199)), SE200 = sd(MT200)/sqrt(length(X200)), SE201 = sd(MT201)/sqrt(length(X201)), SE202 = sd(MT202)/sqrt(length(X202)))
+
+```
+```{r}
+library(tidyr)
+#long form data for plots
+#sediment MeHg
+smm <- gather(sm, Isotope, Concentration, -Box) 
+smse <- gather(sme, Is, SE, -Box)
+smp <- cbind(smm, smse[,3])
+#Sediment TotHg
+stm <- gather(st, Isotope, Concentration, -Box) 
+stse <- gather(ste, Is, SE, -Box)
+stp <- cbind(stm, stse[,3])
+#Sediment Me/Tot
+smtm <- gather(smt, Isotope, Concentration, -Box) 
+smtse <- gather(smte, Is, SE, -Box)
+smtp <- cbind(smtm, smte[,3])
+smtp
+
+
+```
+```{r}
+wmp <- gather(wm, Isotope, Concentration, -Box)
+dwmp <- gather(dwm, Isotope, Concentration, -Box)
+bpmp <- gather(bpm, Isotope, Concentration, -Box)
+bbmp <- gather(bbm, Isotope, Concentration, -Box)
+bfmp <- gather(bfm, Isotope, Concentration, -Box)
+bsmp <- gather(bsm, Isotope, Concentration, -Box)
+
+smp
+```
+
+```{r}
+library(ggplot2)
+require(gridExtra)
+ggplot(smp, aes(Box, Concentration)) +   
+  geom_bar(aes(fill = Isotope), position = position_dodge(), stat = "identity", width = .9) +
+  geom_errorbar(aes(ymin=Concentration-SE, ymax=Concentration+SE), width=.2,position=position_dodge(.9))+
+  guides(fill="none") +
+  theme_bw() +
+  labs(title = "MeHg concentration in sediment")+
+  ylab("Concentration (ng/g dw)") 
+```
+```{r}
+ggplot(wmp, aes(Box, Concentration)) +   
+  geom_bar(aes(fill = Isotope), position = "dodge", stat = "identity") +
+  guides(fill="none") +
+  theme_bw() +
+labs(title = "MeHg concentration in water")+
+  ylab("Concentration (ng/l)")
+ggplot(dwmp, aes(Box, Concentration)) +   
+  geom_bar(aes(fill = Isotope), position = "dodge", stat = "identity") +
+  guides(fill="none") +
+  theme_bw() +
+labs(title = "MeHg Accumulated by water DGTs (ng)")+
+  ylab("Accumulation (ng)")
+ggplot(bpmp, aes(Box, Concentration)) +   
+  geom_bar(aes(fill = Isotope), position = "dodge", stat = "identity") +
+  guides(fill="none") +
+  theme_bw() +
+labs(title = "MeHg concentration in Egeria Densa")+
+  ylab("Concentration (ng/g dw)")
+ggplot(bbmp, aes(Box, Concentration)) +   
+  geom_bar(aes(fill = Isotope), position = "dodge", stat = "identity") +
+  guides(fill="none") +
+  theme_bw() +
+labs(title = "MeHg concentration in biofilms") +
+  ylab("Concentration (ng/g dw)")
+ggplot(bfmp, aes(Box, Concentration)) +   
+  geom_bar(aes(fill = Isotope), position = "dodge", stat = "identity") +
+  guides(fill="none") +
+  theme_bw() +
+labs(title = "MeHg concentration in Mosquito Fish")+
+  ylab("Concentration (ng/g dw)")
+ggplot(bsmp, aes(Box, Concentration)) +   
+  geom_bar(aes(fill = Isotope), position = "dodge", stat = "identity") +
+  scale_fill_discrete(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw() +
+labs(title = "MeHg concentration in snails")+
+  ylab("Concentration (ng/g dw)")
+
+```
+
+```{r}
+#Visualizing data with histograms to check for normalcy
+aovdat <- read.csv("~/Mesocosm First Pass/Mesocosm.6.week.data.csv")
+bf <- aovdat$bf.mehg
+bp <- aovdat$bp.mehg
+bs <- aovdat$bs.mehg
+bb <- aovdat$bb.mehg
+lbf <- log(aovdat$bf.mehg)
+lbp <- log(aovdat$bp.mehg)
+lbs <- log(aovdat$bs.mehg)
+lbb <- log(aovdat$bb.mehg)
+par(mfrow = c(2,4), mar = c(3,3,3,3))
+hist(bf, main = "Histogram of\n MeHg Conc. in Fish")
+hist(bp, main = "Histogram of\n MeHg Conc. in Plants")
+hist(bs, main = "Histogram of\n MeHg Conc. in Snails")
+hist(bb, main = "Histogram of\n MeHg Conc. in Biofilms")
+hist(lbf, main = "Histogram of\n log MeHg Conc. in Fish")
+hist(lbp, main = "Histogram of\n log MeHg Conc. in Plants")
+hist(lbs, main = "Histogram of\n log MeHg Conc in Snails")
+hist(lbb, main = "Histogram of\n log MeHg Conc. in Biofilms")
+```
+```{r}
+#log transforming data appears to help. Double check with Shapiro Test
+shapiro.test(bf)
+shapiro.test(bp)
+shapiro.test(bs)
+shapiro.test(bb)
+shapiro.test(lbf)
+shapiro.test(lbp)
+shapiro.test(lbs)
+shapiro.test(lbb)
+#According to results of shapiro test, log transform helped fish and snails greatly, made plants and biofilms worse (It looks like this in the histograms as well!). Therefore log fish and snails will be used; original data for plants and biofilms will be used. All seem reasonable for use. 
+```
+
+```{r}
+#Updating data frame with new columns for log transformed data.  
+aovdat2 <- mutate(aovdat, lbf.mehg = log(bf.mehg), lbs.mehg = log(bs.mehg))
+aovdat2[,'Box']<-factor(aovdat2[,'Box'])
+aovdat2[,'Isotope']<-factor(aovdat2[,'Isotope'])
+aovdat2
+#First pass at simple linear regression!
+bs1 <- lm(lbs.mehg ~ dw.mehg, data = aovdat2)
+bf1 <- lm(lbf.mehg ~ dw.mehg, data = aovdat2)
+bp1 <- lm(bp.mehg ~ dw.mehg, data = aovdat2)
+bb1 <- lm(bb.mehg ~ dw.mehg, data = aovdat2)
+summary(bs1)
+summary(bf1)
+summary(bp1)
+summary(bb1)
+#dgts appear to have a significant relationship in all cases!
+#snail p = .0206, fish p = .00344, plants p = 8.07 e-5, biofilms p = .00015
+```
+```{r}
+#this model does not account for blocking effect from boxes. Trying with random effects (even though I only have 4 samples/box!)
+require(lme4)
+bs2 <- lmer(lbs.mehg ~ dw.mehg + (1|Box), data = aovdat2)
+bf2 <- lmer(lbf.mehg ~ dw.mehg + (1|Box), data = aovdat2)
+bp2 <- lmer(bp.mehg ~ dw.mehg + (1|Box), data = aovdat2)
+bb2 <- lmer(bb.mehg ~ dw.mehg + (1|Box), data = aovdat2)
+anova(bs2)
+anova(bf2)
+anova(bp2)
+anova(bb2)
+summary(bs2)
+summary(bf2)
+summary(bp2)
+summary(bb2)
+par(8,2)
+plot(bs2)
+plot(bf2)
+plot(bp2)
+plot(bb2)
+#Original - snail p = .0206, fish p = .00344, plants p = 8.07 e-5, biofilms p = .00015
+#In all cases it either stayed relatively the same or improved the outcome. Everything is still signifiant! Yay!
+#New - snail p = .0001, fish p = .0003, plants p = 8.05 e -5, biofilms p = .0002
+```
+```{r}
+coefbs2 <- coefficients(bs2)
+coefbf2 <- coefficients(bf2)
+coefbp2 <- coefficients(bp2)
+coefbb2 <- coefficients(bb2)
+coefbb2
+```
+
+```{r}
+
+ggplot(aovdat2, aes(x=lbs.mehg, y=dw.mehg, group=Box,shape=Isotope, colour = Box)) + 
+    geom_point(aes(colour=Box), size = 2.5) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm, se = F) + 
+  xlab("1 week DGT Accumulation of MeHg (ng)") +
+ylab("Log MeHg Conc. in Snails (ng/g dw) ") +
+  scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()
+
+ggplot(aovdat2, aes(x=lbf.mehg, y=dw.mehg, group=Box,shape=Isotope, colour = Box)) + 
+    geom_point(aes(colour=Box), size = 2.5) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm, se = F) + 
+  xlab("1 week DGT Accumulation of MeHg (ng)") +
+ylab("Log MeHg Conc. in Fish (ng/g dw)") +
+  scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()
+
+ggplot(aovdat2, aes(x=bp.mehg, y=dw.mehg, group=Box,shape=Isotope, colour = Box)) + 
+    geom_point(aes(colour=Box), size = 2.5) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm, se = F) + 
+  xlab("1 week DGT Accumulation of MeHg (ng)") +
+ylab("MeHg Conc. in Plants (ng/g dw)") +
+  scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()
+
+ggplot(aovdat2, aes(x=bb.mehg, y=dw.mehg, group=Box,shape=Isotope, colour = Box)) + 
+    geom_point(aes(colour=Box), size = 2.5) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm, se = F) + 
+  xlab("1 week DGT Accumulation of MeHg (ng)") +
+ylab("MeHg Conc. in Biofilms (ng/g dw)") +
+  scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()
+
+ggplot(aovdat2, aes(x=w.mehg, y=dw.mehg, group=Box,shape=Isotope, colour = Box)) + 
+    geom_point(aes(colour=Box), size = 2.5) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm, se = F) + 
+  xlab("1 week DGT Accumulation of MeHg (ng)") +
+ylab("MeHg Conc. in Water (ng/k dw)") +
+  scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()
+
+```    
+```{r}
+#Waaay too many variables to get a good plot. Creating separate data sets for each biota type
+bspairs <- dplyr::select(aovdat2, -bp.mehg, -bf.mehg, -bb.mehg, -lbf.mehg, -bs.mehg, -s.tothg, - Isotope, - Box)
+bfpairs <- dplyr::select(aovdat2, -bp.mehg, -lbs.mehg, -bb.mehg, -bs.mehg, - bf.mehg, -s.tothg, - Isotope, - Box)
+bppairs <- dplyr::select(aovdat2, -bf.mehg, -bb.mehg, -lbf.mehg, -lbs.mehg, - bs.mehg -s.tothg, - Isotope, - Box)
+bbpairs <- dplyr::select(aovdat2, -bp.mehg, -bf.mehg, -bs.mehg, -lbf.mehg, -lbs.mehg, -s.tothg, - Isotope, - Box)
+#plotting pairs for each biota type
+ggpairs(bspairs)
+ggpairs(bfpairs)
+ggpairs(bppairs)
+ggpairs(bbpairs)
+#Definitely some co-linearity among data. Will have to be careful with analysis
+```
+```{r}
+head(aovdat2)
+```
+```{r}
+#Beginning multiple linear regression for snails. All water parameters and sediment dgts appear to be colinear. Will be considered seperately.
+require(lme4)
+require(MuMIn)
+mrbs <- lmer(lbs.mehg ~ dw.mehg + (1|Box), data = aovdat2)
+mrbs1 <- lmer(lbs.mehg ~ w.mehg + (1|Box), data = aovdat2)
+mrbs2 <- lmer(lbs.mehg ~ dw.tothg + (1|Box), data = aovdat2)
+mrbs3 <- lmer(lbs.mehg ~ w.tothg + (1|Box), data = aovdat2)
+mrbs4 <- lmer(lbs.mehg ~ ds.mehg + (1|Box), data = aovdat2)
+r.squaredGLMM(mrbs)
+r.squaredGLMM(mrbs1)
+r.squaredGLMM(mrbs2)
+r.squaredGLMM(mrbs3)
+r.squaredGLMM(mrbs4)
+summary(mrbs)
+summary(mrbs1)
+summary(mrbs2)
+summary(mrbs3)
+summary(mrbs4)
+#sediment MeHg is not significant in any model. All others appear to be significant
+#rerunning with sediment removed
+#OK - all of these look pretty good, but water TotHg and water dgt tothg are clear winners
+```
+
+
+```{r}
+#Beginning multiple linear regression for fish. All water parameters and sediment dgts appear to be colinear. Will be considered seperately.
+require(lme4)
+require(MuMIn)
+mrbf <- lmer(lbf.mehg ~ dw.mehg + (1|Box), data = aovdat2)
+mrbf1 <- lmer(lbf.mehg ~ w.mehg + (1|Box), data = aovdat2)
+mrbf2 <- lmer(lbf.mehg ~ dw.tothg + (1|Box), data = aovdat2)
+mrbf3 <- lmer(lbf.mehg ~ w.tothg + (1|Box), data = aovdat2)
+mrbf4 <- lmer(lbf.mehg ~ ds.mehg + (1|Box), data = aovdat2)
+r.squaredGLMM(mrbf)
+r.squaredGLMM(mrbf1)
+r.squaredGLMM(mrbf2)
+r.squaredGLMM(mrbf3)
+r.squaredGLMM(mrbf4)
+summary(mrbf)
+summary(mrbf1)
+summary(mrbf2)
+summary(mrbf3)
+summary(mrbf4)
+#OK. water dgt MeHg and water MeHg significant, but have much lower r2. Again, sediment it not significant. Removing and running again.
+```
+```{r}
+#Beginning multiple linear regression for biofilms. All water parameters and sediment dgts appear to be colinear. Will be considered seperately.
+require(lme4)
+require(MuMIn)
+mrbb <- lmer(bb.mehg ~ dw.mehg + (1|Box), data = aovdat2)
+mrbb1 <- lmer(bb.mehg ~ w.mehg + (1|Box), data = aovdat2)
+mrbb2 <- lmer(bb.mehg ~ dw.tothg + (1|Box), data = aovdat2)
+mrbb3 <- lmer(bb.mehg ~ w.tothg + (1|Box), data = aovdat2)
+mrbb4 <- lmer(bb.mehg ~ ds.mehg + (1|Box), data = aovdat2)
+r.squaredGLMM(mrbb)
+r.squaredGLMM(mrbb1)
+r.squaredGLMM(mrbb2)
+r.squaredGLMM(mrbb3)
+r.squaredGLMM(mrbb4)
+summary(mrbb)
+summary(mrbb1)
+summary(mrbb2)
+summary(mrbb3)
+summary(mrbb4)
+#Again, sediment it not significant. Removing and running again.
+```
+ 
+
+```{r}
+#Beginning multiple linear regression for fish. All water parameters and sediment dgts appear to be colinear. Will be considered seperately.
+require(lme4)
+require(MuMIn)
+mrbp <- lmer(bp.mehg ~ dw.mehg + (1|Box), data = aovdat2)
+mrbp1 <- lmer(bp.mehg ~ w.mehg + (1|Box), data = aovdat2)
+mrbp2 <- lmer(bp.mehg ~ dw.tothg + (1|Box), data = aovdat2)
+mrbp3 <- lmer(bp.mehg ~ w.tothg + (1|Box), data = aovdat2)
+mrbp4 <- lmer(bp.mehg ~ s.mehg + (1|Box), data = aovdat2)
+r.squaredGLMM(mrbp)
+r.squaredGLMM(mrbp1)
+r.squaredGLMM(mrbp2)
+r.squaredGLMM(mrbp3)
+r.squaredGLMM(mrbp4)
+summary(mrbp)
+summary(mrbp1)
+summary(mrbp2)
+summary(mrbp3)
+summary(mrbp4)
+#OK. water dgt MeHg and water MeHg significant, but have much lower r2. Again, sediment it not significant. Removing and running again.
+```
+```{r}
+ggplot(aovdat2, aes(x=lbs.mehg, y=dw.tothg, group=Box,shape=Isotope, colour = Box)) + 
+    geom_point(aes(colour=Box)) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm, se = F) + 
+  xlab("1 week DGT Accumulation of TotHg (ng)") +
+ylab("MeHg Conc. in Snails (ng/g dw) ") +
+  scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()
+
+ggplot(aovdat2, aes(x=lbf.mehg, y=dw.tothg, group=Box,shape=Isotope, colour = Box)) + 
+    geom_point(aes(colour=Box)) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm, se = F) + 
+  xlab("1 week DGT Accumulation of TotHg (ng)") +
+ylab("MeHg Conc. in Fish (ng/g dw)") +
+  scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()
+
+ggplot(aovdat2, aes(x=bp.mehg, y=dw.tothg, group=Box,shape=Isotope, colour = Box)) + 
+    geom_point(aes(colour=Box)) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm, se = F) + 
+  xlab("1 week DGT Accumulation of TotHg (ng)") +
+ylab("MeHg Conc. in Plants (ng/g dw)") +
+  scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()
+
+ggplot(aovdat2, aes(x=bb.mehg, y=dw.tothg, group=Box,shape=Isotope, colour = Box)) + 
+    geom_point(aes(colour=Box)) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm, se = F) + 
+  xlab("1 week DGT Accumulation of TotHg (ng)") +
+ylab("MeHg Conc. in Biofilms (ng/g dw)") +
+  scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()
+
+``` 

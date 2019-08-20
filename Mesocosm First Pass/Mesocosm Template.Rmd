@@ -1,0 +1,10 @@
+---
+title: "R Notebook"
+output: html_notebook
+
+```{r}
+dat <- read.csv("~/Mesocosm First Pass/New R DATA.csv")
+head(dat)
+```
+
+

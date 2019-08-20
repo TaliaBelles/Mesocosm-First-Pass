@@ -1,0 +1,534 @@
+---
+title: "Sediment DGT Project"
+output:
+  word_document: default
+  pdf_document: default
+  html_notebook: default
+---
+
+
+```{r}
+#Reading in data and cleaning up messy data set
+dat0 <- read.csv("~/Mesocosm First Pass/RDAT2.csv")
+#dat0 <- dplyr::select(dat00, -X, -X.1, -X.2)
+dat <- dat0[1:24,]
+datmid <- dat0[1:12,]
+datlast <- dat0[13:24,]
+dat$Isotope <- as.factor(dat$Isotope)
+dat$Box <- as.factor(dat$Box)
+datlast
+```
+
+```{r}
+library(ggplot2)
+#require(gridExtra)
+ggplot(dat, aes(Box, s.mehg, fill = Isotope)) + 
+  geom_bar(position = position_dodge(), stat = "identity", width = .5) +
+  geom_errorbar(aes(ymin=s.mehg-se.s.mehg, ymax=s.mehg+se.s.mehg), width = .2, position=position_dodge(.5)) +
+  guides(fill="none") +
+  theme_bw() +
+  labs(title = "MeHg concentration in sediment")+
+  ylab("Concentration (ng/g dw)")+
+  theme(axis.text=element_text(size=16), title=element_text(size = 22))
+
+ggplot(dat, aes(Box, s.tothg, fill = Isotope)) + 
+  geom_bar(position = position_dodge(), stat = "identity", width = .5) +
+  geom_errorbar(aes(ymin=s.tothg-se.s.tothg, ymax=s.tothg+se.s.tothg), width = .2, position=position_dodge(.5)) +
+  guides(fill="none") +
+  theme_bw() +
+  labs(title = "Tot Hg concentration in sediment")+
+  ylab("Concentration (ng/g dw)")+
+  theme(axis.text=element_text(size=16), title=element_text(size = 22)) 
+
+ggplot(dat, aes(Box, s.mthg*100, fill = Isotope)) + 
+ geom_bar(position = position_dodge(), stat = "identity", width = .5) +
+  geom_errorbar(aes(ymin=(s.mthg-se.s.mthg)*100, ymax=(s.mthg+se.s.mthg)*100), width = .2, position=position_dodge(.5)) +
+  guides(fill="none") +
+  #scale_fill_discrete(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw() +
+  labs(title = "% Hg present as MeHg in sediment")+
+  ylab("% MeHg")+
+  theme(axis.text=element_text(size=16), title=element_text(size = 22)) 
+
+ggplot(dat, aes(Box, ds.mehg, fill = Isotope)) +   
+  geom_bar(position = position_dodge(), stat = "identity", width = .5) +
+  geom_errorbar(aes(ymin=ds.mehg-se.ds.mehg, ymax=ds.mehg+se.ds.mehg), width = .2, position=position_dodge(.5)) +
+  guides(fill="none") +
+  theme_bw() +
+labs(title = "1 wk MeHg accumulation on sed. DGTs")+
+  ylab("Accumulation (ng)")+
+  theme(axis.text=element_text(size=16), title=element_text(size = 22))
+
+ggplot(dat, aes(Box, ds.tothg, fill = Isotope)) +   
+  geom_bar(position = position_dodge(), stat = "identity", width = .5) +
+  geom_errorbar(aes(ymin=ds.tothg-se.ds.tothg, ymax=ds.tothg+se.ds.tothg), width = .2, position=position_dodge(.5)) +
+  guides(fill="none") +
+  theme_bw() +
+labs(title = "1 wk TotHg accumulation on sed. DGTs")+
+  ylab("Accumulation (ng)")+
+  theme(axis.text=element_text(size=16), title=element_text(size = 22))
+
+ggplot(dat, aes(Box, ds.ratio*100, fill = Isotope)) +   
+  geom_bar(position = position_dodge(), stat = "identity", width = .5) +
+  geom_errorbar(aes(ymin=(ds.ratio-se.ds.ratio)*100, ymax=(ds.ratio+se.ds.ratio)*100), width = .2, position=position_dodge(.5)) +
+  guides(fill="none") +
+  theme_bw() +
+labs(title = "% Hg present as MeHg on sed. DGTs")+
+  ylab("Accumulation (ng)")+
+  theme(axis.text=element_text(size=16), title=element_text(size = 22))
+
+ggplot(dat, aes(Box, ds.ihg, fill = Isotope)) +   
+  geom_bar(position = position_dodge(), stat = "identity", width = .5) +
+  geom_errorbar(aes(ymin=ds.ihg-se.ds.ihg, ymax=ds.ihg+se.ds.ihg), width = .2, position=position_dodge(.5)) +
+  guides(fill="none") +
+  theme_bw() +
+labs(title = "1 wk IHg Accumulation on sed. DGTs")+
+  ylab("Accumulation (ng)")+
+  theme(axis.text=element_text(size=16), title=element_text(size = 22))
+
+
+ggplot(dat, aes(Box, w.mehg, fill = Isotope)) +   
+  geom_bar(position = position_dodge(), stat = "identity", width = .5) +
+  geom_errorbar(aes(ymin=w.mehg-se.w.mehg, ymax=w.mehg+se.w.mehg), width = .2, position=position_dodge(.5)) +
+  guides(fill="none") +
+  theme_bw() +
+labs(title = "MeHg concentration in water")+
+  ylab("Concentration (ng/l)")+
+  theme(axis.text=element_text(size=16), title=element_text(size = 22))
+
+ggplot(dat, aes(Box, w.tothg, fill = Isotope)) +   
+  geom_bar(position = position_dodge(), stat = "identity", width = .5) +
+  geom_errorbar(aes(ymin=w.tothg-se.w.tothg, ymax=w.tothg+se.w.tothg), width = .2, position=position_dodge(.5)) +
+  guides(fill="none") +
+  theme_bw() +
+labs(title = "TotHg concentration in water")+
+  ylab("Concentration (ng/l)")+
+  theme(axis.text=element_text(size=16), title=element_text(size = 22))
+
+ggplot(dat, aes(Box, dw.mehg, fill = Isotope)) +   
+  geom_bar(position = position_dodge(), stat = "identity", width = .5) +
+  geom_errorbar(aes(ymin=dw.mehg-se.dw.mehg, ymax=dw.mehg+se.dw.mehg), width = .2, position=position_dodge(.5)) +
+  guides(fill="none") +
+  theme_bw() +
+labs(title = "1 wk MeHg accumulation by water DGT")+
+  ylab("Accumulation (ng)")+
+  theme(axis.text=element_text(size=16), title=element_text(size = 21))
+
+ggplot(dat, aes(Box, dw.tothg, fill = Isotope)) +   
+  geom_bar(position = position_dodge(), stat = "identity", width = .5) +
+  geom_errorbar(aes(ymin=dw.tothg-se.dw.tothg, ymax=dw.tothg+se.dw.tothg), width = .2, position=position_dodge(.5)) +
+  guides(fill="none") +
+  #scale_fill_discrete(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw() +
+labs(title = "1 wk.TotHg accumulation by water DGTs")+
+  ylab("Accumulation (ng)")+
+  theme(axis.text=element_text(size=16), title=element_text(size = 21))
+
+ggplot(dat, aes(Box, bp.mehg, fill = Isotope)) +   
+  geom_bar(position = position_dodge(), stat = "identity", width = .5) +
+  geom_errorbar(aes(ymin=bp.mehg-se.bp.mehg, ymax=bp.mehg+se.bp.mehg), width = .2, position=position_dodge(.5)) +
+  guides(fill="none") +
+  theme_bw() +
+labs(title = "MeHg concentration in Egeria Densa")+
+  ylab("Concentration (ng/g dw)")+
+  theme(axis.text=element_text(size=16), title=element_text(size = 22))
+
+ggplot(dat, aes(Box, bb.mehg, fill = Isotope)) +   
+ geom_bar(position = position_dodge(), stat = "identity", width = .5) +
+  geom_errorbar(aes(ymin=bb.mehg-se.bb.mehg, ymax=bb.mehg+se.bb.mehg), width = .2, position=position_dodge(.5)) +
+  guides(fill="none") +
+  theme_bw() +
+labs(title = "MeHg concentration in biofilms") +
+  ylab("Concentration (ng/g dw)")+
+  theme(axis.text=element_text(size=16), title=element_text(size = 22))
+
+ggplot(dat, aes(Box, bf.mehg, fill = Isotope)) +   
+  geom_bar(position = position_dodge(), stat = "identity", width = .5) +
+  geom_errorbar(aes(ymin=bf.mehg-se.bf.mehg, ymax=bf.mehg+se.bf.mehg), width = .2, position=position_dodge(.5)) +
+  guides(fill="none") +
+  theme_bw() +
+labs(title = "MeHg concentration in Mosquito Fish")+
+  ylab("Concentration (ng/g dw)")+
+  theme(axis.text=element_text(size=16), title=element_text(size = 22))
+
+ggplot(dat, aes(Box, bs.mehg, fill = Isotope)) +   
+  geom_bar(position = position_dodge(), stat = "identity", width = .5) +
+  geom_errorbar(aes(ymin=bs.mehg-de.bs.mehg, ymax=bs.mehg+de.bs.mehg), width = .2, position=position_dodge(.5)) +
+  guides(fill="none") +
+  #scale_fill_discrete(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw() +
+labs(title = "MeHg concentration in snails")+
+  ylab("Concentration (ng/g dw)")+
+  theme(axis.text=element_text(size=16), title=element_text(size = 22))
+
+```
+
+```{r}
+#Visualizing data with histograms to check for normalcy
+aovdat <- read.csv("~/Mesocosm First Pass/Mesocosm.6.week.data.csv")
+bf <- dat$bf.mehg
+bp <- dat$bp.mehg
+bs <- dat$bs.mehg
+bb <- dat$bb.mehg
+
+lbf <- log10(dat$lbf.mehg)
+lbp <- log10(dat$bp.mehg)
+lbs <- log10(dat$bs.mehg)
+lbb <- log10(dat$bb.mehg)
+
+par(mfrow = c(2,4), mar = c(3,3,3,3))
+hist(bf, main = "Histogram of\n MeHg Conc. in Fish")
+hist(bp, main = "Histogram of\n MeHg Conc. in Plants")
+hist(bs, main = "Histogram of\n MeHg Conc. in Snails")
+hist(bb, main = "Histogram of\n MeHg Conc. in Biofilms")
+hist(lbf, main = "Histogram of\n log MeHg Conc. in Fish")
+hist(lbp, main = "Histogram of\n log MeHg Conc. in Plants")
+hist(lbs, main = "Histogram of\n log MeHg Conc in Snails")
+hist(lbb, main = "Histogram of\n log MeHg Conc. in Biofilms")
+
+
+```
+
+```{r}
+#log transforming data appears to help. Double check with Shapiro Test
+shapiro.test(bf)
+shapiro.test(bp)
+shapiro.test(bs)
+shapiro.test(bb)
+shapiro.test(lbf)
+shapiro.test(lbp)
+shapiro.test(lbs)
+shapiro.test(lbb)
+#According to results of shapiro test, log transform helped fish and snails greatly, made plants and biofilms worse (It looks like this in the histograms as well!). Therefore log fish and snails will be used; original data for plants and biofilms will be used. All seem reasonable for use. 
+```
+
+```{r}
+#Trying with random effects (even though I only have 4 samples/box!)
+require(lme4)
+bs2 <- lmer(lbs.mehg ~ dw.mehg + (1|Box), data = dat)
+bf2 <- lmer(lbf.mehg ~ dw.mehg + (1|Box), data = dat)
+bp2 <- lmer(bp.mehg ~ dw.mehg + (1|Box), data = dat)
+bb2 <- lmer(bb.mehg ~ dw.mehg + (1|Box), data = dat)
+anova(bs2)
+anova(bf2)
+anova(bp2)
+anova(bb2)
+summary(bs2)
+summary(bf2)
+summary(bp2)
+summary(bb2)
+#Everything is signifiant! Yay!
+#New - snail p = .0001, fish p = .0003, plants p = 7.78 e -5, biofilms p = .0002
+```
+
+
+```{r}
+
+ggplot(dat, aes(y=lbs.mehg, x=dw.mehg, group=Box,shape=Isotope, colour = Box)) + 
+    geom_point(aes(colour=Box), size = 2.5) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm, se = F) + 
+  xlab("1 week DGT Accumulation of MeHg (ng)") +
+ylab("Log MeHg Conc. in Snails (ng/g dw) ")+
+  labs(title = "Mehg Accumulation on DGTs vs \nMeHg Accumulation in Snails") +
+  scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()+
+  theme(axis.text=element_text(size=12), title=element_text(size = 16))
+  
+
+ggplot(dat, aes(y=lbf.mehg, x=dw.mehg, group=Box,shape=Isotope, colour = Box)) + 
+    geom_point(aes(colour=Box), size = 2.5) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm, se = F) + 
+  xlab("1 week DGT Accumulation of MeHg (ng)") +
+ylab("Log MeHg Conc. in Fish (ng/g dw)") +
+  labs(title = "Mehg Accumulation on DGTs vs \nMeHg Accumulation in Fish")+
+  scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()+
+  theme(axis.text=element_text(size=12), title=element_text(size = 16))
+  
+
+ggplot(dat, aes(y=bp.mehg, x=dw.mehg, group=Box,shape=Isotope, colour = Box)) + 
+    geom_point(aes(colour=Box), size = 2.5) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm, se = F) + 
+  xlab("1 week DGT Accumulation of MeHg (ng)") +
+ylab("MeHg Conc. in Plants (ng/g dw)") +
+  labs(title = "Mehg Accumulation on DGTs vs \nMeHg Accumulation in Plants")+
+  scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()+
+  theme(axis.text=element_text(size=12), title=element_text(size = 16))
+ 
+
+ggplot(dat, aes(y=bb.mehg, x=dw.mehg, group=Box,shape=Isotope, colour = Box)) + 
+    geom_point(aes(colour=Box), size = 2.5) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm, se = F) + 
+  xlab("1 week DGT Accumulation of MeHg (ng)") +
+ylab("MeHg Conc. in Biofilms (ng/g dw)") +
+  labs(title = "Mehg Accumulation on DGTs vs \nMeHg Accumulation in Biofilms")+
+  scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()+
+  theme(axis.text=element_text(size=12), title=element_text(size = 16))
+  
+
+ggplot(dat, aes(y=w.mehg, x=dw.mehg, group=Box,shape=Isotope, colour = Box)) + 
+    geom_point(aes(colour=Box), size = 2.5) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm, se = F) + 
+  xlab("1 week DGT Accumulation of MeHg (ng)") +
+ylab("MeHg Conc. in Water (ng/l)") +
+  scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()+
+  theme(axis.text=element_text(size=12), title=element_text(size = 16))
+  
+
+```    
+```{r}
+ggplot(dat, aes(y=lbs.mehg, x=dw.tothg, group=Box,shape=Isotope, colour = Box)) + 
+    geom_point(aes(colour=Box)) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm, se = F) + 
+  xlab("1 week DGT Accumulation of TotHg (ng)") +
+ylab("MeHg Conc. in Snails (ng/g dw) ") +
+  labs(title = "TotHg Accumulation on DGTs vs \nMeHg Accumulation in Snails")+
+  theme(axis.text=element_text(size=14), title=element_text(size = 20))+
+  scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()
+
+ggplot(dat, aes(y=lbf.mehg, x=dw.tothg, group=Box,shape=Isotope, colour = Box)) + 
+    geom_point(aes(colour=Box)) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm, se = F) + 
+  xlab("1 week DGT Accumulation of TotHg (ng)") +
+ylab("MeHg Conc. in Fish (ng/g dw)") +
+  labs(title = "TotHg Accumulation on DGTs vs \nMeHg Accumulation in Fish")+
+  theme(axis.text=element_text(size=14), title=element_text(size = 20))+
+  scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()
+
+ggplot(dat, aes(y=bp.mehg, x=dw.tothg, group=Box,shape=Isotope, colour = Box)) + 
+    geom_point(aes(colour=Box)) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm, se = F) + 
+  xlab("1 week DGT Accumulation of TotHg (ng)") +
+ylab("MeHg Conc. in Plants (ng/g dw)") +
+  labs(title = "TotHg Accumulation on DGTs vs \nMeHg Accumulation in Plants")+
+  theme(axis.text=element_text(size=14), title=element_text(size = 20))+
+  scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()
+
+ggplot(dat, aes(y=bb.mehg, x=dw.tothg, group=Box,shape=Isotope, colour = Box)) + 
+    geom_point(aes(colour=Box)) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm, se = F) + 
+  xlab("1 week DGT Accumulation of TotHg (ng)") +
+ylab("MeHg Conc. in Biofilms (ng/g dw)") +
+  labs(title = "TotHg Accumulation on DGTs vs \nMeHg Accumulation in Biofilms")+
+  theme(axis.text=element_text(size=14), title=element_text(size = 20))+
+  scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()
+
+``` 
+```{r}
+ggplot(dat, aes(y=bb.mehg, x=dw.tothg)) + 
+    geom_point(aes(colour=Box)) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm) + 
+  xlab("1 week DGT Accumulation of TotHg (ng)") +
+ylab("MeHg Conc. in Biofilms (ng/g dw)") +
+  labs(title = "TotHg Accumulation on DGTs vs \nMeHg Accumulation in Biofilms")+
+ scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()+
+  theme(axis.text=element_text(size=12), title=element_text(size = 16))
+
+ggplot(dat, aes(y=bp.mehg, x=dw.tothg)) + 
+    geom_point(aes(colour=Box)) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm) + 
+  xlab("1 week DGT Accumulation of TotHg (ng)") +
+ylab("MeHg Conc. in Plants (ng/g dw)") +
+  labs(title = "TotHg Accumulation on DGTs vs \nMeHg Accumulation in plants")+
+ scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()+
+  theme(axis.text=element_text(size=12), title=element_text(size = 16))
+
+ggplot(dat, aes(y=lbf.mehg, x=dw.tothg)) + 
+    geom_point(aes(colour=Box)) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm) + 
+  xlab("1 week DGT Accumulation of TotHg (ng)") +
+ylab("MeHg Conc. in Fish (ng/g dw)") +
+  labs(title = "TotHg Accumulation on DGTs vs \nMeHg Accumulation in Fish")+
+ scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()+
+  theme(axis.text=element_text(size=12), title=element_text(size = 16))
+
+ggplot(dat, aes(y=lbs.mehg, x=dw.tothg)) + 
+    geom_point(aes(colour=Box)) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm) + 
+  xlab("1 week DGT Accumulation of TotHg (ng)") +
+ylab("MeHg Conc. in Snails (ng/g dw)") +
+  labs(title = "TotHg Accumulation on DGTs vs \nMeHg Accumulation in Snails")+
+ scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()+
+  theme(axis.text=element_text(size=12), title=element_text(size = 16))
+
+ggplot(dat, aes(y=log10(s.mehg), x=ds.ihg)) + 
+    geom_point(aes(colour=Box)) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm) + 
+  xlab("1 week DGT Accumulation of IHg (ng)") +
+ylab("Log MeHg Conc. in Sediment (ng/g dw)") +
+  labs(title = "IHg Accumulation on DGTs vs \nMeHg Accumulation in Sediment")+
+ scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()+
+  theme(axis.text=element_text(size=12), title=element_text(size = 16))
+
+ggplot(dat, aes(y=log10(s.mehg), x=ds.ihg, group=Box,shape=Isotope, colour = Box)) + 
+    geom_point(aes(colour=Box)) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm, se = F) + 
+  xlab("1 week DGT Accumulation of IHg (ng)") +
+ylab("Log MeHg Conc. in Sediment (ng/g dw)") +
+  labs(title = "IHg Accumulation on DGTs vs \nMeHg Accumulation in Sediment")+
+  theme(axis.text=element_text(size=14), title=element_text(size = 20))+
+  scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()
+```
+```{r}
+ggplot(dat, aes(y=bb.mehg, x=dw.mehg)) + 
+    geom_point(aes(colour=Box)) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm) + 
+  xlab("1 week DGT Accumulation of MeHg (ng)") +
+ylab("MeHg Conc. in Biofilms (ng/g dw)") +
+  labs(title = "MeHg Accumulation on DGTs vs \nMeHg Accumulation in Biofilms")+
+ scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()+
+  theme(axis.text=element_text(size=12), title=element_text(size = 16))
+
+ggplot(dat, aes(y=bp.mehg, x=dw.mehg)) + 
+    geom_point(aes(colour=Box)) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm) + 
+  xlab("1 week DGT Accumulation of MeHg (ng)") +
+ylab("MeHg Conc. in Plants (ng/g dw)") +
+  labs(title = "MeHg Accumulation on DGTs vs \nMeHg Accumulation in plants")+
+ scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()+
+  theme(axis.text=element_text(size=12), title=element_text(size = 16))
+
+ggplot(dat, aes(y=lbf.mehg, x=dw.mehg)) + 
+    geom_point(aes(colour=Box)) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm) + 
+  xlab("1 week DGT Accumulation of MeHg (ng)") +
+ylab("MeHg Conc. in Fish (ng/g dw)") +
+  labs(title = "MeHg Accumulation on DGTs vs \nMeHg Accumulation in Fish")+
+ scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()+
+  theme(axis.text=element_text(size=12), title=element_text(size = 16))
+
+ggplot(dat, aes(y=lbs.mehg, x=dw.mehg)) + 
+    geom_point(aes(colour=Box)) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm) + 
+  xlab("1 week DGT Accumulation of MeHg (ng)") +
+ylab("MeHg Conc. in Snails (ng/g dw)") +
+  labs(title = "MeHg Accumulation on DGTs vs \nMeHg Accumulation in Snails")+
+ scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()+
+  theme(axis.text=element_text(size=12), title=element_text(size = 16))
+
+```
+
+```{r}
+require(MuMIn)
+wm1 <- lmer(w.mehg ~ bb.mehg + (1|Box), data = dat)
+wm2 <- lmer(ds.mehg ~ dw.mehg + (1|Box), data = dat)
+anova(wm1)
+anova(wm2)
+summary(wm1)
+summary(wm2)
+r.squaredGLMM(wm1)
+r.squaredGLMM(wm2)
+```
+```{r}
+#Working UDS SEDIMENT DATA 
+smehg <- dat$s.mehg
+lsmehg <- log(smehg)
+hist(smehg, main = "Methylmercury in sediments")
+hist(lsmehg, main = "Log Methylmercury in sediments")
+shapiro.test(lsmehg)
+shapiro.test(smehg)
+#Log transforming sediment data greaatly improves normalcy
+```
+```{r}
+sedihg <- dat$s.tothg -dat$s.mehg
+```
+```{r}
+#Trying with random effects 
+#s1 is tothg, s2 is IHG
+#s3 is mehg in sed vs tot hg in sed
+require(lme4)
+#s1 <- lmer(lsmehg ~ ds.tothg + (1|Box), data = dat)
+#s2 <- lmer(lsmehg ~ ds.ihg + (1|Box), data = dat)
+#s3 <- lmer(lsmehg ~ sedihg + (1|Box), data = dat)
+#s4 <- lm(lsmehg ~ ds.mehg, data = dat)
+s5 <- lm(s.mthg ~ ds.ihg + Box + Temp, data = dat)
+
+#anova(s1)
+#anova(s2)
+#anova(s4)
+anova(s5)
+#anova(s3)
+#summary(s1)
+#summary(s2)
+#summary(s4)
+summary(s5)
+#summary(s3)
+#IHG is significant. Total Hg on sediments and DGTs is not
+#TotHg P= .183 tot, IHg P= 3.48 e-5 
+#sed ihg P=.26
+```
+
+
+```{r}
+ggplot(dat, aes(y=lsmehg, x=ds.ihg, group=Box,shape=Isotope, colour = Box)) + 
+    geom_point(aes(colour=Box)) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm, se = F) + 
+  xlab("1 week DGT Accumulation of IHg (ng)") +
+ylab("Log MeHg Conc. in Sediment (ng/g dw)") +
+  labs(title = "IHg on Sediment DGTs vs MeHg Conc. in Sediment")+
+  theme(axis.text=element_text(size=14), title=element_text(size = 20))+
+  scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()
+```
+
+ggplot(datmid, aes(y=lsmehg, x=ds.ihg)) +  
+    geom_point(aes()) +
+    #scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm, se = F) + 
+  xlab("MeHg mass on Sediment DGT (ng)") +
+ylab("Log MeHg Conc. in Sediment (ng/g dw)") +
+  labs(title = "MeHg on Sediment DGTs vs MeHg Conc. in Sediment Week 6")+
+  theme(axis.text=element_text(size=14), title=element_text(size = 20))+
+  #scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()
+
+ggplot(datlast, aes(y=smehg, x=ds.mehg, group=Box, colour = Box)) + 
+    geom_point(aes()) +
+    scale_colour_manual(values=c("cyan3", "purple4","deeppink2"))+
+  geom_smooth(method = lm, se = F) + 
+  xlab("MeHg mass on Sediment DGT (ng)") +
+ylab("Log MeHg Conc. in Sediment (ng/g dw)") +
+  labs(title = "MeHg on Sediment DGTs vs MeHg Conc. in Sediment Week 12")+
+  theme(axis.text=element_text(size=14), title=element_text(size = 20))+
+  #scale_shape(name = "Endmember", labels = c("FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()
+
+
+```

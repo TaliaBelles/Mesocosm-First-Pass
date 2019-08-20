@@ -1,0 +1,136 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+#Separating raw data by sample type
+library(dplyr)
+dat1 <- read.csv("R DATA.csv")
+sapply(dat1, class)
+s <- dat1 %>% 
+  filter(Type == "s")
+w <- dat1 %>% 
+  filter(Type == "w")
+dw <- dat1 %>% 
+  filter(Type == "dw")
+bp <- dat1 %>% 
+  filter(Type == "bp")
+bb <- dat1 %>% 
+  filter(Type == "bb")
+bs <- dat1 %>% 
+  filter(Type == "bs")
+bf <- dat1 %>% 
+  filter(Type == "bf")
+```
+```{r}
+#Separating MeHg in sed by box
+sm <- s %>%
+  filter(Analysis == "MeHg")
+sm16 <- sm %>%
+  filter(Box == "16")
+sm17 <- sm %>%
+  filter(Box == "17")
+sm18 <- sm %>%
+  filter(Box == "18")
+#Separating TotHg in sed by box
+st <- s %>%
+  filter(Analysis == "TotHg")
+st16 <- st %>%
+  filter(Box == "16")
+st17 <- st %>%
+  filter(Box == "17")
+st18 <- st %>%
+  filter(Box == "18")
+#Separating water by box
+w16 <- w %>%
+  filter(Box == 16)
+w17 <- w %>%
+  filter(Box == 17)
+w18 <- w %>%
+  filter(Box == 18)
+#Separating water DGTs by box
+dw16 <- dw %>%
+  filter(Box == 16)
+dw17 <- dw %>%
+  filter(Box == 17)
+dw18 <- dw %>%
+  filter(Box == 18)
+#Separating snails by box
+bs16 <- bs %>%
+  filter(Box == 16)
+bs17 <- bs %>%
+  filter(Box == 17)
+bs18 <- bs %>%
+  filter(Box == 18)
+#Separating fish by box
+bf16 <- bf %>%
+  filter(Box == 16)
+bf17 <- bf %>%
+  filter(Box == 17)
+bf18 <- bf %>%
+  filter(Box == 18)
+#Separating egeria by box
+bp16 <- bp %>%
+  filter(Box == 16)
+bp17 <- bp %>%
+  filter(Box == 17)
+bp18 <- bp %>%
+  filter(Box == 18)
+#Separating biofilms by box
+bb16 <- bp %>%
+  filter(Box == 16)
+bb17 <- bp %>%
+  filter(Box == 17)
+bb18 <- bp %>%
+  filter(Box == 18)
+
+```
+```{r}
+#Calculating Average Values for water MeHg
+w16.199 <- mean(w16$X199)
+w16.200 <- mean(w16$X200)
+w16.201 <- mean(w16$X201)
+w16.202 <- mean(w16$X202)
+w16.196 <- mean(w16$X196)
+
+w17.199 <- mean(w17$X199)
+w17.200 <- mean(w17$X200)
+w17.201 <- mean(w17$X201)
+w17.202 <- mean(w17$X202)
+w17.196 <- mean(w17$X196)
+
+w18.199 <- mean(w18$X199)
+w18.200 <- mean(w18$X200)
+w18.201 <- mean(w18$X201)
+w18.202 <- mean(w18$X202)
+w18.196 <- mean(w18$X196)
+
+#Calculating Average Values for water DGTs
+dw16.199 <- mean(dw16$X199)
+dw16.200 <- mean(dw16$X200)
+dw16.201 <- mean(dw16$X201)
+dw16.202 <- mean(dw16$X202)
+dw16.196 <- mean(dw16$X196)
+
+dw17.199 <- mean(dw17$X199)
+dw17.200 <- mean(dw17$X200)
+dw17.201 <- mean(dw17$X201)
+dw17.202 <- mean(dw17$X202)
+dw17.196 <- mean(dw17$X196)
+
+dw18.199 <- mean(dw18$X199)
+dw18.200 <- mean(dw18$X200)
+dw18.201 <- mean(dw18$X201)
+dw18.202 <- mean(dw18$X202)
+dw18.196 <- mean(dw18$X196)
+```
+```{r}
+water16 <- c(w16.199, w16.200, w16.201, w16.202)
+dwater16 <- c(dw16.199, dw16.200, dw16.201, dw16.202)
+ggplot(zz, aes(x.value, color = L1)) + geom_point() + 
+scale_color_manual("Dataset", values = 
+c("p1" = "darkgreen", "p2" = "blue", "p3" = "red")) + geom_line()
+ggplot(water16, dwater16)
+```
+

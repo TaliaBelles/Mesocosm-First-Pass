@@ -1,0 +1,104 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+#Converting CSV into data frame 
+dat <- read.csv("R DATA.csv")
+library(dplyr)
+#Separating Data by Analysis Type
+MeHg <- dat %>%
+  filter(Analysis == "MeHg")
+TotHg <- dat %>%
+  filter(Analysis == "TotHg")
+#Separating MeHg by Sample Type
+sm <- MeHg %>%
+  filter(Type == "s") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202), Mean196 = mean(X196))
+wm <- MeHg %>% 
+  filter(Type == "w") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202), Mean196 = mean(X196))
+dwm <- MeHg %>% 
+  filter(Type == "dw") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202), Mean196 = mean(X196))
+bpm <- MeHg %>% 
+  filter(Type == "bp") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202), Mean196 = mean(X196))
+bbm <- MeHg %>% 
+  filter(Type == "bb") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202), Mean196 = mean(X196))
+bsm <- MeHg %>% 
+  filter(Type == "bs") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202), Mean196 = mean(X196))
+bfm <- MeHg %>% 
+  filter(Type == "bf") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202), Mean196 = mean(X196))
+#Separating Tot Hg by Sample Type
+st <- TotHg %>% 
+  filter(Type == "s") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202), Mean196 = mean(X196))
+wt <- TotHg %>% 
+  filter(Type == "w") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202), Mean196 = mean(X196))
+dwt <- TotHg %>% 
+  filter(Type == "dw") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202), Mean196 = mean(X196))
+bpt <- TotHg %>% 
+  filter(Type == "bp") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202), Mean196 = mean(X196))
+bbt <- TotHg %>% 
+  filter(Type == "bb") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202), Mean196 = mean(X196))
+bst <- TotHg %>% 
+  filter(Type == "bs") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202), Mean196 = mean(X196))
+bft <- TotHg %>% 
+  filter(Type == "bf") %>% group_by(Box) %>%
+  summarize(Mean199 = mean(X199), Mean200 = mean(X200), Mean201 = mean(X201), Mean202 = mean(X202), Mean196 = mean(X196))
+```
+```{r}
+library(tidyr)
+smp <- gather(sm, Isotope, Concentration, -Box)
+library(ggplot2)
+ggplot(smp, aes(Box, Concentration)) +   
+  geom_bar(aes(fill = Isotope), position = "dodge", stat = "identity") +
+  scale_fill_discrete(name = "Endmember", labels = c("Ambient", "FeS-Hg", "Nano-HgS", "Hg-Humic acid", "Dissolved Hg²⁺")) +
+  theme_bw()
+```
+```{r}
+SMhg <- dat %>%
+  filter(Analysis == "MeHg") %>%
+  filter(Type == "s")
+TotSM <- (SMhg$X199 + SMhg$X200 + SMhg$X202 + SMhg$X201 + SMhg$X196)
+par(mfrow = c(1,2), mar = c(5,5,5,5))
+#Checking for normality in response data
+hist(TotSM, xlab = "Total MeHg in Snails", main = "Histogram of\n MeHg Conc. in Snails")
+hist(log(TotSM), xlab = "Log Total MeHg in Snails", main = "Histogram of\n log MeHg Conc. in Snails")
+#OK. log transformed data look WAY better. Let's confirm.
+shapiro.test(TotSM)
+shapiro.test(log(TotSM)
+#Shapiro test results confirm that log transformed data are way closer to a normal distribution              
+```
+# plot everything
+library(ggplot2)
+# Use position=position_dodge()
+dfm <- melt(df[,c('Box','Mean199','Mean200', 'Mean201', 'Mean202)],id.vars = 1)
+
+ggplot(dfm,aes(x = Input,y = value)) + 
+    geom_bar(aes(fill = variable),stat = "identity",position = "dodge") + 
+    scale_y_log10()
+
+```
+par(mfrow = c(2,4))
+hist(sm)
+hist(wm)
+hist(dwm)
+hist(bpm)
+hist(bbm)
+hist(bsm)
+hist(bfm)
+```
+
+
+
